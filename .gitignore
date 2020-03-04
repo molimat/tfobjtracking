@@ -3,3 +3,4 @@ logs
 yolov3_tf2.egg-info
 checkpoints
 data/Roboflow/*
+data/dat*
