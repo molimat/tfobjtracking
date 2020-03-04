@@ -93,16 +93,15 @@ def main(_argv):
 
     writer = tf.io.TFRecordWriter(FLAGS.output_file)
     image_list = open(os.path.join(
-        FLAGS.data_dir, 'ImageSets', 'Main', 'bus_%s.txt' % FLAGS.split)).read().splitlines()
+        FLAGS.data_dir, 'ImageSets', 'Main', 'airplane_%s.txt' % FLAGS.split)).read().splitlines()
     logging.info("Image list loaded: %d", len(image_list))
     for image in tqdm.tqdm(image_list):
-        name, presence = image.split()
-        if presence == '1':
-            annotation_xml = os.path.join(FLAGS.data_dir, 'Annotations', name + '.xml')
-            annotation_xml = lxml.etree.fromstring(open(annotation_xml).read())
-            annotation = parse_xml(annotation_xml)['annotation']
-            tf_example = build_example(annotation, class_map)
-            writer.write(tf_example.SerializeToString())
+        name, _ = image.split()
+        annotation_xml = os.path.join(FLAGS.data_dir, 'Annotations', name + '.xml')
+        annotation_xml = lxml.etree.fromstring(open(annotation_xml).read())
+        annotation = parse_xml(annotation_xml)['annotation']
+        tf_example = build_example(annotation, class_map)
+        writer.write(tf_example.SerializeToString())
     writer.close()
     logging.info("Done")
 
